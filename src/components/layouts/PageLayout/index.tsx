@@ -2,9 +2,10 @@ import * as React from 'react';
 
 import { getBaseLayoutComponent } from '../../../utils/base-layout';
 import { getComponent } from '../../components-registry';
+import { ExperienceRoot } from '@contentful/experiences-sdk-react';
 
 export default function PageLayout(props) {
-    const { page, site } = props;
+    const { page, site, experienceJSON } = props; // Ensure experienceJSON is passed as a prop
     const BaseLayout = getBaseLayoutComponent(page.baseLayout, site.baseLayout);
     const { enableAnnotations = true } = site;
     const { title, sections = [] } = page;
@@ -16,6 +17,10 @@ export default function PageLayout(props) {
                     <h1 className="sr-only" {...(enableAnnotations && { 'data-sb-field-path': 'title' })}>
                         {title}
                     </h1>
+                )}
+                {/* Adding ExperienceRoot */}
+                {experienceJSON && (
+                    <ExperienceRoot experience={experienceJSON} locale={'en-US'} />
                 )}
                 {sections.length > 0 && (
                     <div {...(enableAnnotations && { 'data-sb-field-path': 'sections' })}>
@@ -39,3 +44,4 @@ export default function PageLayout(props) {
         </BaseLayout>
     );
 }
+
